@@ -19,7 +19,7 @@ router.use(function (req, res, next) {
 });
 
 router.use(session({
-	secret: 'tongiscool',
+	secret: process.env.session_secret,
 	resave: false,
 	saveUninitialized: false
 }));
