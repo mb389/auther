@@ -2,7 +2,8 @@
 
 var router = require('express').Router(),
 	session = require('express-session'),
-	passport = require('passport');
+	passport = require('passport'),
+	dotenv = require('dotenv').config();
 
 var User = require('../api/users/user.model');
 
