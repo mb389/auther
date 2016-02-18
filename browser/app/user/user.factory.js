@@ -15,6 +15,14 @@ app.factory('User', function ($http, Story) {
 		return !this._id
 	};
 
+	// User.isAdmin = function(userId) {
+	// 	return $http.get(User.url+userId)
+	// 	.then(function(res) {
+	// 		console.log(res)
+	// 		return res.data.isAdmin;
+	// 	})
+	// }
+
 	User.prototype.fetch = function () {
 		return $http.get(this.getUrl())
 		.then(function (res) {

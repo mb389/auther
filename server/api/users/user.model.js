@@ -1,4 +1,4 @@
-'use strict'; 
+'use strict';
 
 var mongoose = require('mongoose'),
 	shortid = require('shortid'),
@@ -13,18 +13,25 @@ var User = new mongoose.Schema({
 		unique: true,
 		default: shortid.generate
 	},
-	name: String,
+	name: {
+		type: String
+	},
 	photo: {
 		type: String,
 		default: '/images/default-photo.jpg'
 	},
-	phone: String,
+	phone: {
+		type: String
+	},
 	email: {
 		type: String,
 		required: true,
 		unique: true
 	},
-	password: String,
+	password: {
+		type: String,
+		select: false
+	},
 	google: {
 		id: String,
 		name: String,
@@ -45,7 +52,8 @@ var User = new mongoose.Schema({
 	},
 	isAdmin: {
 		type: Boolean,
-		default: false
+		default: false,
+		select: false
 	}
 });
 
