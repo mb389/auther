@@ -4,8 +4,17 @@ var router = require('express').Router();
 
 var HttpError = require('../utils/HttpError');
 var User = require('../api/users/user.model');
+var crypto = require('crypto');
+
+var userStore = {};
 
 router.post('/login', function (req, res, next) {
+	var hash = crypto
+      .createHash("md5")
+      .update(req.body.password)
+      .digest('hex');
+      req.body.password = hash
+
 	User.findOne(req.body).exec()
 	.then(function (user) {
 		if (!user) throw HttpError(401);
@@ -17,9 +26,17 @@ router.post('/login', function (req, res, next) {
 });
 
 router.post('/signup', function (req, res, next) {
+
+	var hash = crypto
+      .createHash("md5")
+      .update(req.body.password)
+      .digest('hex');
+      req.body.password = hash;
+
 	User.create(req.body)
 	.then(function (user) {
 		req.login(user, function () {
+			console.log(user);
 			res.status(201).json(user);
 		});
 	})

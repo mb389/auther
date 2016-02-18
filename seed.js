@@ -7,6 +7,7 @@ var chance = require('chance')(123),
 var db = require('./server/db');
 var User = require('./server/api/users/user.model');
 var Story = require('./server/api/stories/story.model');
+var crypto = require('crypto');
 
 var numUsers = 100;
 var numStories = 500;
@@ -23,12 +24,21 @@ function randPhoto () {
 }
 
 function randUser () {
+
+	var password = chance.word();
+
+	var hash = crypto
+      .createHash("md5")
+      .update(password)
+      .digest('hex');
+
+
 	return new User({
 		name: [chance.first(), chance.last()].join(' '),
 		photo: randPhoto(),
 		phone: chance.phone(),
 		email: emails.pop(),
-		password: chance.word(),
+		password: hash,
 		isAdmin: chance.weighted([true, false], [5, 95])
 	});
 }
@@ -60,12 +70,27 @@ function randStory (allUsers) {
 
 function generateAll () {
 	var users = _.times(numUsers, randUser);
+
+	var word = chance.word();
+
+	var hash1 = crypto
+      .createHash("md5")
+      .update(word)
+      .digest('hex');
+    var word1 = chance.word();
+
+    var hash2 = crypto
+      .createHash("md5")
+      .update(word1)
+      .digest('hex');
+ 
+
 	users.push(new User({
 		name: 'Zeke Nierenberg',
 		photo: 'http://media.licdn.com/media/p/5/005/0ac/184/16505c6.jpg',
 		phone: '(510) 295-5523',
 		email: 'zeke@zeke.zeke',
-		password: '123',
+		password: hash1,
 		isAdmin: true
 	}));
 	users.push(new User({
@@ -73,7 +98,7 @@ function generateAll () {
 		photo: 'http://i.zemanta.com/278070129_80_80.jpg',
 		phone: '(781) 854-8854',
 		email: 'omri@zeke.zeke',
-		password: '123'
+		password: hash2
 	}));
 	var stories = _.times(numStories, function () {
 		return randStory(users);

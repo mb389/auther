@@ -2,6 +2,7 @@
 
 var app = require('express')();
 var path = require('path');
+var https = require('https');
 
 app.use(require('./logging.middleware'));
 
